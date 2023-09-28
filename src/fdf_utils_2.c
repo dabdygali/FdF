@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checkwarn_open_fd.c                             :+:      :+:    :+:   */
+/*   fdf_utils_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/22 09:49:49 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/27 13:00:15 by dabdygal         ###   ########.fr       */
+/*   Created: 2023/09/28 10:23:54 by dabdygal          #+#    #+#             */
+/*   Updated: 2023/09/28 12:41:55 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <unistd.h>
+#include <fdf.h>
+#include "mlx.h"
 
-int	ft_checkwarn_open_fd(int fd)
+int	model_to_img(t_model *model, t_img *img, void *mlx_ptr)
 {
-	if (fd < 0)
-	{
-		ft_putstr_fd("Failed to open the file\n", STDERR_FILENO);
-		return (-1);
-	}
 	return (0);
 }

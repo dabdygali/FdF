@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:01:32 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/26 13:13:35 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:11:36 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 
 # define MIN_ARGC 2
 # define MAX_ARGC 2
-# define SIZE_X 500
-# define SIZE_Y 500
+# define X_ADD 100
+# define Y_ADD 100
 # define MLX_ESC_KEYCODE 53
 # define DESTR_CODE 17
-# define SCALE_UNIT 20
+# define SCALE_UNIT 10
+# include "libft.h"
 
 typedef struct mlx_window
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
+	int		size_x;
+	int		size_y;
 }	t_mlx_window;
 
 typedef struct model_point
@@ -34,23 +37,36 @@ typedef struct model_point
 	float	z;
 }	t_point;
 
-typedef struct row_list
+typedef struct row_node
 {
-	t_point		*pts;
-	t_rowlist	*next;
-}	t_rowlist;
+	t_point			*pts;
+	struct row_node	*next;
+}	t_rownode;
 
 typedef struct map_model
 {
-	t_rowlist	row;
+	t_rownode	*head;
 	int			col_count;
 	int			row_count;
 }	t_model;
+
+typedef struct mlx_img
+{
+	int		width;
+	int		height;
+	void	*img;
+	char	*data;
+	int		bitperpix;
+	int		size_line;
+	int		endian;
+}	t_img;
 
 int	checkwarn_mlx_init(void *mlx_ptr);
 int	checkwarn_mlx_new_window(void *win_ptr);
 int	handle_key(int keycode, void *window);
 int	handle_destroy(void *title);
-int	init_window(int argc, char **argv, int *fd, t_mlx_window *window);
+int	init_window(char *name, t_mlx_window *window);
+int	init_model(int argc, char *filepath, t_model *model);
+int	parse_line(t_model *model, char *line);
 
 #endif

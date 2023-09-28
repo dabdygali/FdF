@@ -6,62 +6,83 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 09:15:12 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/26 13:57:01 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:48:33 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <unistd.h>
-#include "libft.h"
 #include <stdlib.h>
 #include <errno.h>
+#include <stdio.h>
+#include <math.h>
+#include "libft.h"
 #include "mlx.h"
 #include "fdf.h"
 
-static int	append_row(t_model *model, char *line)
+/*
+void	print_model(t_model *model)
 {
-	return (0);
-}
+	int			i;
+	int			j;
+	t_rownode	*tmp;
 
-static int	init_model(t_model *model, int fd)
-{
-	char	*line;
-
-	model->col_count = 0;
-	model->row_count = 0;
-	model->row.pts = NULL;
-	model->row.next = NULL;
-	line = get_next_line(fd);
-	while (line)
+	i = 0;
+	tmp = model->head;
+	while (i < model->row_count)
 	{
-		model->row_count++;
-		if (append_row(model, line) < 0)
+		j = 0;
+		while (j < model->col_count)
 		{
-			ft_putstr_fd("Found wrong line length\n", STDERR_FILENO);
-			return (-1);
+			printf("%.1f ", tmp->pts[j].z);
+			j++;
 		}
-		free(line);
-		line = get_next_line(fd);
+		printf("\n");
+		tmp = tmp->next;
+		i++;
 	}
-	if (!model->row.pts)
+}*/
+
+int	calc_win_size(t_model *model, int *x, int *y)
+{
+	int			j;
+	t_rownode	*tmp;
+	int			x_max;
+	int			y_max;
+
+	tmp = model->head;
+	x_max = 0;
+	y_max = 0;
+	while (tmp)
 	{
-		ft_putstr_fd("No data found\n", STDERR_FILENO);
-		return (-1);
+		j = 0;
+		while (j < model->col_count)
+		{
+			if (x_max < fabs((double) tmp->pts[j].x))
+				x_max = (int) ceil((double) tmp->pts[j].x);
+			if (y_max < fabs((double) tmp->pts[j].y))
+				y_max = (int) ceil((double) tmp->pts[j].y);
+			j++;
+		}
+		tmp = tmp->next;
 	}
+	*x = x_max + X_ADD;
+	*y = y_max + Y_ADD;
 	return (0);
 }
 
 int	main(int argc, char *argv[])
 {
-	int				map_fd;
 	t_mlx_window	window;
 	t_model			model;
+	t_img			img;
 
-	if (init_window(argc, argv, &map_fd, &window, &model) < 0)
+	if (init_model(argc, argv[1], &model) < 0)
 		return (EXIT_FAILURE);
-	if (init_model(&model, map_fd) < 0)
+	if (calc_win_size(&model, &window.size_x, &window.size_y) < 0)
 		return (EXIT_FAILURE);
-	close(map_fd);
+	if (init_window(argv[1], &window) < 0)
+		return (EXIT_FAILURE);
+	if (model_to_img(&model, &img, window.mlx_ptr) < 0)
+		return (EXIT_FAILURE);
 	mlx_loop(window.mlx_ptr);
 	return (EXIT_SUCCESS);
 }
