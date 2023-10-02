@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:50:38 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/28 12:53:21 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:50:46 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	append_row(t_model *model, char **str)
 	i = 0;
 	while (str[i])
 	{
-		points[i].x = (float) i * SCALE_UNIT;
-		points[i].y = (float) (model->row_count - 1) * SCALE_UNIT;
+		points[i].x = (float)(i * SCALE_UNIT);
+		points[i].y = (float)((model->row_count - 1) * SCALE_UNIT);
 		points[i].z = (float) ft_atoi(str[i]) * SCALE_UNIT;
 		i++;
 	}
@@ -94,6 +94,14 @@ int	parse_line(t_model *model, char *line)
 	return (0);
 }
 
+static void	init_zeros(t_model *model)
+{
+	model->col_count = 0;
+	model->row_count = 0;
+	model->head = NULL;
+	return ;
+}
+
 int	init_model(int argc, char *filepath, t_model *model)
 {
 	char	*line;
@@ -104,9 +112,7 @@ int	init_model(int argc, char *filepath, t_model *model)
 	fd = open(filepath, O_RDONLY);
 	if (ft_checkwarn_open_fd(fd) < 0)
 		return (-1);
-	model->col_count = 0;
-	model->row_count = 0;
-	model->head = NULL;
+	init_zeros(model);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -120,5 +126,6 @@ int	init_model(int argc, char *filepath, t_model *model)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	set_extremes(model);
 	return (0);
 }

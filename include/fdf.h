@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:01:32 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/28 13:11:36 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:37:59 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,30 @@ typedef struct map_model
 	t_rownode	*head;
 	int			col_count;
 	int			row_count;
+	float		x_min;
+	float		y_min;
+	float		x_max;
+	float		y_max;
 }	t_model;
 
 typedef struct mlx_img
 {
 	int		width;
 	int		height;
-	void	*img;
+	void	*img_ptr;
 	char	*data;
 	int		bitperpix;
 	int		size_line;
 	int		endian;
 }	t_img;
 
-int	checkwarn_mlx_init(void *mlx_ptr);
-int	checkwarn_mlx_new_window(void *win_ptr);
-int	handle_key(int keycode, void *window);
-int	handle_destroy(void *title);
-int	init_window(char *name, t_mlx_window *window);
-int	init_model(int argc, char *filepath, t_model *model);
-int	parse_line(t_model *model, char *line);
+int		checkwarn_mlx_init(void *mlx_ptr);
+int		checkwarn_mlx_new_window(void *win_ptr);
+int		handle_key(int keycode, void *window);
+int		handle_destroy(void *title);
+int		init_window(char *name, t_mlx_window *window);
+int		init_model(int argc, char *filepath, t_model *model);
+int		parse_line(t_model *model, char *line);
+void	set_extremes(t_model *model);
 
 #endif

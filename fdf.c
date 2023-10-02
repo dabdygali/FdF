@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 09:15:12 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/28 13:48:33 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:40:55 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,34 +41,6 @@ void	print_model(t_model *model)
 	}
 }*/
 
-int	calc_win_size(t_model *model, int *x, int *y)
-{
-	int			j;
-	t_rownode	*tmp;
-	int			x_max;
-	int			y_max;
-
-	tmp = model->head;
-	x_max = 0;
-	y_max = 0;
-	while (tmp)
-	{
-		j = 0;
-		while (j < model->col_count)
-		{
-			if (x_max < fabs((double) tmp->pts[j].x))
-				x_max = (int) ceil((double) tmp->pts[j].x);
-			if (y_max < fabs((double) tmp->pts[j].y))
-				y_max = (int) ceil((double) tmp->pts[j].y);
-			j++;
-		}
-		tmp = tmp->next;
-	}
-	*x = x_max + X_ADD;
-	*y = y_max + Y_ADD;
-	return (0);
-}
-
 int	main(int argc, char *argv[])
 {
 	t_mlx_window	window;
@@ -77,8 +49,10 @@ int	main(int argc, char *argv[])
 
 	if (init_model(argc, argv[1], &model) < 0)
 		return (EXIT_FAILURE);
-	if (calc_win_size(&model, &window.size_x, &window.size_y) < 0)
-		return (EXIT_FAILURE);
+	img.width = (int) round(model.x_max - model.x_min);
+	img.height = (int) round(model.y_max - model.y_min);
+	window.size_x = img.width + X_ADD;
+	window.size_y = img.height + Y_ADD;
 	if (init_window(argv[1], &window) < 0)
 		return (EXIT_FAILURE);
 	if (model_to_img(&model, &img, window.mlx_ptr) < 0)
