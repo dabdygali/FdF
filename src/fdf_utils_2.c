@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 10:23:54 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/02 11:41:13 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:32:46 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,26 @@
 #include "mlx.h"
 #include <math.h>
 
-void	set_extremes(t_model *model)
+int	draw_lines(t_model *model, t_img *img)
 {
-	int			i;
 	t_rownode	*tmp;
+	int			i;
 
 	tmp = model->head;
-	model->x_max = 0;
-	model->y_max = 0;
-	model->x_min = 0;
-	model->y_min = 0;
 	while (tmp)
 	{
-		i = -1;
-		while (++i < model->col_count)
+		i = 0;
+		while (i < model->col_count)
 		{
-			if (model->x_max < tmp->pts[i].x)
-				model->x_max = tmp->pts[i].x;
-			if (model->y_max < tmp->pts[i].y)
-				model->y_max = tmp->pts[i].y;
-			if (model->x_min > tmp->pts[i].x)
-				model->x_min = tmp->pts[i].x;
-			if (model->y_min > tmp->pts[i].y)
-				model->y_min = tmp->pts[i].y;
+			if (i != model->col_count - 1)
+				bressenham_lda(img, tmp->pts[i], tmp->pts[i + 1]);
+			if (tmp->next)
+				bressenham_lda(img, tmp->pts[i], tmp->next->pts[i]);
+			i++;
 		}
 		tmp = tmp->next;
 	}
-	return ;
+	return (0);
 }
 
 int	model_to_img(t_model *model, t_img *img, void *mlx_ptr)
@@ -54,5 +47,11 @@ int	model_to_img(t_model *model, t_img *img, void *mlx_ptr)
 	if (!img->img_ptr)
 		return (-1);
 	img->data = mlx_get_data_addr(img->img_ptr, bpp, size_line, &img->endian);
+	if (!img->data)
+		return (-1);
+	if (*bpp % 2)
+		return (-1);
+	if (draw_lines(model, img) < 0)
+		return (-1);
 	return (0);
 }

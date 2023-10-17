@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:01:32 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/02 11:37:59 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/16 11:05:33 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define MLX_ESC_KEYCODE 53
 # define DESTR_CODE 17
 # define SCALE_UNIT 10
+# define SCREEN_MAX_X 5120
+# define SCREEN_MAX_Y 2880
 # include "libft.h"
 
 typedef struct mlx_window

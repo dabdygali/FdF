@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:06:00 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/09/28 13:01:09 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/16 10:13:40 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,35 @@
 #include <fcntl.h>
 #include "mlx.h"
 #include "fdf.h"
+
+void	set_extremes(t_model *model)
+{
+	int			i;
+	t_rownode	*tmp;
+
+	tmp = model->head;
+	model->x_max = 0;
+	model->y_max = 0;
+	model->x_min = 0;
+	model->y_min = 0;
+	while (tmp)
+	{
+		i = -1;
+		while (++i < model->col_count)
+		{
+			if (model->x_max < tmp->pts[i].x)
+				model->x_max = tmp->pts[i].x;
+			if (model->y_max < tmp->pts[i].y)
+				model->y_max = tmp->pts[i].y;
+			if (model->x_min > tmp->pts[i].x)
+				model->x_min = tmp->pts[i].x;
+			if (model->y_min > tmp->pts[i].y)
+				model->y_min = tmp->pts[i].y;
+		}
+		tmp = tmp->next;
+	}
+	return ;
+}
 
 int	handle_key(int keycode, void *window)
 {
