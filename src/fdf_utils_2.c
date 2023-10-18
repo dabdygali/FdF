@@ -6,13 +6,21 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 10:23:54 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/17 13:32:46 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/18 11:13:40 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
 #include <math.h>
+
+void	bressenham_lda(t_img *img, t_point a, t_point b)
+{
+	a.rx = round(a.x);
+	a.ry = round(a.y);
+	b.rx = round(b.x);
+	b.ry = round(b.y);
+}
 
 int	draw_lines(t_model *model, t_img *img)
 {
@@ -25,7 +33,7 @@ int	draw_lines(t_model *model, t_img *img)
 		i = 0;
 		while (i < model->col_count)
 		{
-			if (i != model->col_count - 1)
+			if (i < model->col_count - 1)
 				bressenham_lda(img, tmp->pts[i], tmp->pts[i + 1]);
 			if (tmp->next)
 				bressenham_lda(img, tmp->pts[i], tmp->next->pts[i]);

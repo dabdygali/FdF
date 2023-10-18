@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:01:32 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/16 11:05:33 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/18 11:04:33 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define SCREEN_MAX_Y 2880
 # include "libft.h"
 
-typedef struct mlx_window
+typedef struct s_mlx_window
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -32,20 +32,22 @@ typedef struct mlx_window
 	int		size_y;
 }	t_mlx_window;
 
-typedef struct model_point
+typedef struct s_model_point
 {
 	float	x;
 	float	y;
 	float	z;
+	int		rx;
+	int		ry;
 }	t_point;
 
-typedef struct row_node
+typedef struct s_row_node
 {
 	t_point			*pts;
 	struct row_node	*next;
 }	t_rownode;
 
-typedef struct map_model
+typedef struct s_map_model
 {
 	t_rownode	*head;
 	int			col_count;
@@ -56,7 +58,7 @@ typedef struct map_model
 	float		y_max;
 }	t_model;
 
-typedef struct mlx_img
+typedef struct s_mlx_img
 {
 	int		width;
 	int		height;
