@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:01:32 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/18 11:04:33 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:44:37 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_model_point
 typedef struct s_row_node
 {
 	t_point			*pts;
-	struct row_node	*next;
+	struct s_row_node	*next;
 }	t_rownode;
 
 typedef struct s_map_model
@@ -77,5 +77,9 @@ int		init_window(char *name, t_mlx_window *window);
 int		init_model(int argc, char *filepath, t_model *model);
 int		parse_line(t_model *model, char *line);
 void	set_extremes(t_model *model);
+int		model_to_img(t_model *model, t_img *img, void *mlx_ptr);
+void	rasterize_model(t_model *model);
+void	putpixel_img(t_img *img, int x, int y);
+int		ft_abs(int i);
 
 #endif

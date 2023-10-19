@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:06:00 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/16 10:13:40 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:31:27 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,29 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <math.h>
 #include "mlx.h"
 #include "fdf.h"
+
+void	rasterize_model(t_model *model)
+{
+	int			i;
+	t_rownode	*tmp;
+
+	tmp = model->head;
+	while (tmp)
+	{
+		i = 0;
+		while (i < model->col_count)
+		{
+			tmp->pts[i].rx = round(tmp->pts[i].rx);
+			tmp->pts[i].ry = round(tmp->pts[i].ry);
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	return ;
+}
 
 void	set_extremes(t_model *model)
 {

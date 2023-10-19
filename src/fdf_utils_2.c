@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 10:23:54 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/18 11:13:40 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:47:23 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,84 @@
 #include "mlx.h"
 #include <math.h>
 
-void	bressenham_lda(t_img *img, t_point a, t_point b)
+void	bressenham_y(t_img *img, t_point a, t_point b)
 {
-	a.rx = round(a.x);
-	a.ry = round(a.y);
-	b.rx = round(b.x);
-	b.ry = round(b.y);
+	int	x;
+	int	y;
+	int	p;
+	int	dx;
+	int	xi;
+
+	dx = ft_abs(b.rx - a.rx);
+	p = (2 * dx) - (b.ry - a.ry);
+	x = a.rx;
+	y = a.ry;
+	xi = 1;
+	if (b.rx < a.rx)
+		xi = -1;
+	while (y <= b.ry)
+	{
+		putpixel_img(img, x, y++);
+		if (p < 0)
+			p = p + (2 * dx);
+		else
+		{
+			p = p + (2 * (dx - (b.ry - a.ry)));
+			x += xi;
+		}
+	}
+	return ;
 }
 
-int	draw_lines(t_model *model, t_img *img)
+void	bressenham_x(t_img *img, t_point a, t_point b)
+{
+	int	x;
+	int	y;
+	int	p;
+	int	dy;
+	int	yi;
+
+	dy = ft_abs(b.ry - a.ry);
+	p = (2 * dy) - (b.rx - a.rx);
+	x = a.rx;
+	y = a.ry;
+	yi = 1;
+	if (b.ry < a.ry)
+		yi = -1;
+	while (x <= b.rx)
+	{
+		putpixel_img(img, x++, y);
+		if (p < 0)
+			p = p + (2 * dy);
+		else
+		{
+			p = p + (2 * (dy - (b.rx - a.rx)));
+			y += yi;
+		}
+	}
+	return ;
+}
+
+void	draw_line(t_img *img, t_point a, t_point b)
+{
+	if (ft_abs(b.ry - a.ry) <= ft_abs(b.rx - a.rx))
+	{
+		if (b.rx >= a.rx)
+			bressenham_x(img, a, b);
+		else
+			bressenham_x(img, b, a);
+	}
+	else
+	{
+		if (b.ry >= a.ry)
+			bressenham_y(img, a, b);
+		else
+			bressenham_y(img, b, a);
+	}
+	return ;
+}
+
+void	build_img(t_model *model, t_img *img)
 {
 	t_rownode	*tmp;
 	int			i;
@@ -34,14 +103,14 @@ int	draw_lines(t_model *model, t_img *img)
 		while (i < model->col_count)
 		{
 			if (i < model->col_count - 1)
-				bressenham_lda(img, tmp->pts[i], tmp->pts[i + 1]);
+				draw_line(img, tmp->pts[i], tmp->pts[i + 1]);
 			if (tmp->next)
-				bressenham_lda(img, tmp->pts[i], tmp->next->pts[i]);
+				draw_line(img, tmp->pts[i], tmp->next->pts[i]);
 			i++;
 		}
 		tmp = tmp->next;
 	}
-	return (0);
+	return ;
 }
 
 int	model_to_img(t_model *model, t_img *img, void *mlx_ptr)
@@ -49,6 +118,8 @@ int	model_to_img(t_model *model, t_img *img, void *mlx_ptr)
 	int	*bpp;
 	int	*size_line;
 
+	img->data = NULL;
+	img->img_ptr = NULL;
 	bpp = &img->bitperpix;
 	size_line = &img->size_line;
 	img->img_ptr = mlx_new_image (mlx_ptr, img->width, img->height);
@@ -59,7 +130,7 @@ int	model_to_img(t_model *model, t_img *img, void *mlx_ptr)
 		return (-1);
 	if (*bpp % 2)
 		return (-1);
-	if (draw_lines(model, img) < 0)
-		return (-1);
+	rasterize_model(model);
+	build_img(model, img);
 	return (0);
 }

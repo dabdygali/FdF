@@ -6,7 +6,7 @@
 #    By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/15 15:43:23 by dabdygal          #+#    #+#              #
-#    Updated: 2023/10/02 11:39:34 by dabdygal         ###   ########.fr        #
+#    Updated: 2023/10/19 13:28:04 by dabdygal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ CFLAGS = -Wall -Wextra -Werror -I $(INCLUDE_DIR) -I $(LIB1_DIR) -L $(LIB1_DIR) -
 
 SRC_FILES = fdf_utils.c \
 			fdf_utils_1.c \
-			fdf_utils_2.c
+			fdf_utils_2.c \
+			fdf_utils_3.c
 
 MAIN_DIR = .
 
