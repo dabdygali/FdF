@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:50:38 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/18 11:07:46 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:22:19 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ static void	init_zeros(t_model *model)
 	model->col_count = 0;
 	model->row_count = 0;
 	model->head = NULL;
+	model->angle_x = 0;
+	model->angle_y = 0;
+	model->angle_x = 0;
 	return ;
 }
 

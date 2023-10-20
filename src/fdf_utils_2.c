@@ -6,13 +6,14 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 10:23:54 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/19 13:47:23 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:46:56 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
 #include <math.h>
+#include <stdio.h>
 
 void	bressenham_y(t_img *img, t_point a, t_point b)
 {
@@ -74,6 +75,8 @@ void	bressenham_x(t_img *img, t_point a, t_point b)
 
 void	draw_line(t_img *img, t_point a, t_point b)
 {
+	if (a.rx < 0 || a.ry < 0 || b.rx < 0 || b.ry < 0)
+		return ;
 	if (ft_abs(b.ry - a.ry) <= ft_abs(b.rx - a.rx))
 	{
 		if (b.rx >= a.rx)
@@ -96,6 +99,7 @@ void	build_img(t_model *model, t_img *img)
 	t_rownode	*tmp;
 	int			i;
 
+	clear_img(img);
 	tmp = model->head;
 	while (tmp)
 	{

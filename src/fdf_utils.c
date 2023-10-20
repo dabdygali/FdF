@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 11:06:00 by dabdygal          #+#    #+#             */
-/*   Updated: 2023/10/19 13:31:27 by dabdygal         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:15:57 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	rasterize_model(t_model *model)
 		i = 0;
 		while (i < model->col_count)
 		{
-			tmp->pts[i].rx = round(tmp->pts[i].rx);
-			tmp->pts[i].ry = round(tmp->pts[i].ry);
+			tmp->pts[i].rx = round(tmp->pts[i].x);
+			tmp->pts[i].ry = round(tmp->pts[i].y);
 			i++;
 		}
 		tmp = tmp->next;
@@ -68,18 +68,30 @@ void	set_extremes(t_model *model)
 	return ;
 }
 
-int	handle_key(int keycode, void *window)
+int	handle_key(int keycode, void *all)
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	t_all	*a;
+	void	*ptr;
 
+	a = (t_all *) all;
+	ptr = a->w->mlx_ptr;
 	if (keycode == MLX_ESC_KEYCODE)
 	{
-		mlx_ptr = ((t_mlx_window *) window)->mlx_ptr;
-		win_ptr = ((t_mlx_window *) window)->win_ptr;
-		mlx_destroy_window(mlx_ptr, win_ptr);
+		mlx_destroy_window(a->w->mlx_ptr, a->w->win_ptr);
 		exit(0);
 	}
+	if (keycode == KEY_LEFT)
+		rotate_model_y(a->m, -ANGLE_STEP);
+	if (keycode == KEY_RIGHT)
+		rotate_model_y(a->m, ANGLE_STEP);
+	if (keycode == KEY_UP)
+		rotate_model_x(a->m, ANGLE_STEP);
+	if (keycode == KEY_DOWN)
+		rotate_model_x(a->m, -ANGLE_STEP);
+	move_model_postive(a->m);
+	rasterize_model(a->m);
+	build_img(a->m, a->img);
+	mlx_put_image_to_window(ptr, a->w->win_ptr, a->img->img_ptr, 0, 0);
 	return (0);
 }
 
@@ -90,7 +102,7 @@ int	handle_destroy(void *title)
 	return (0);
 }
 
-int	init_window(char *name, t_mlx_window *win)
+int	init_window(char *name, t_mlx_window *win, t_all *all)
 {
 	win->mlx_ptr = mlx_init();
 	if (win->mlx_ptr == NULL)
@@ -106,7 +118,7 @@ int	init_window(char *name, t_mlx_window *win)
 		perror("Failed to create a window");
 		return (-1);
 	}
-	mlx_key_hook(win->win_ptr, handle_key, (void *) win);
+	mlx_key_hook(win->win_ptr, handle_key, (void *) all);
 	mlx_hook(win->win_ptr, DESTR_CODE, 0, handle_destroy, (void *) name);
 	return (0);
 }
